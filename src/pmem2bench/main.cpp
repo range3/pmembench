@@ -35,8 +35,8 @@ extern "C" {
 void memcpy_erms(void* dst, void* src, size_t size);
 }
 
-thread_local char buf[2 * 1024 * 1024];
-// thread_local char* buf;
+// thread_local char buf[2 * 1024 * 1024];
+thread_local char* buf;
 
 auto main(int argc, char* argv[]) -> int {
   cxxopts::Options options("pmem2bench",
@@ -220,7 +220,7 @@ auto main(int argc, char* argv[]) -> int {
 
   for (size_t i = 0; i < nthreads; ++i) {
     workers.emplace_back([&, i] {
-      // buf = (char*)malloc(random_string_data.size());
+      buf = (char*)malloc(random_string_data.size());
       // buf = (char*)malloc(2*1024*1024);
       // buf = (char*)aligned_alloc(op_alignment, 2*1024*1024);
       // buf = gbuf + i*2*1024*1024;
