@@ -18,7 +18,7 @@
 #include <pmembench/elapsedtime.hpp>
 #include <pmembench/gen_random_string.hpp>
 #include <pmembench/pretty_bytes.hpp>
-#include <pmembench/sense_barrier.hpp>
+#include <pmembench/barrier.hpp>
 #include <random>
 #include <sstream>
 #include <string>
@@ -214,7 +214,7 @@ auto main(int argc, char* argv[]) -> int {
   auto blocks_in_stripe = stripe_size / block_size;
 
   std::vector<std::thread> workers;
-  pmembench::SenseBarrier barrier(nthreads + 1);
+  pmembench::Barrier barrier(nthreads + 1);
   std::atomic<bool> fail(false);
 
   for (size_t i = 0; i < nthreads; ++i) {

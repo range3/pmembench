@@ -12,7 +12,7 @@ namespace pmembench {
   public:
     Barrier(size_t nthreads) : nthreads_(nthreads) {}
 
-    void enter() {
+    void wait() {
       {
         std::unique_lock<std::mutex> lk(mtx_);
         nthreads_ -= 1;

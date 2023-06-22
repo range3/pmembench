@@ -192,8 +192,8 @@ auto main(int argc, char* argv[]) -> int try {
   for (size_t i = 0; i < nthreads; ++i) {
     workers.emplace_back([&, i] {
       std::string buf = random_string_data;
-      wait_for_ready.enter();
-      wait_for_timer.enter();
+      wait_for_ready.wait();
+      wait_for_timer.wait();
 
       for (size_t stripe = 0; stripe < stripe_count; ++stripe) {
         size_t strip_ofs = stripe * blocks_in_stripe + i * blocks_in_strip_unit;
@@ -232,15 +232,15 @@ auto main(int argc, char* argv[]) -> int try {
           break;
         }
       }
-      wait_for_finish.enter();
+      wait_for_finish.wait();
     });
   }
 
-  wait_for_ready.enter();
+  wait_for_ready.wait();
   pmembench::ElapsedTime elapsed_time;
   elapsed_time.reset();
-  wait_for_timer.enter();
-  wait_for_finish.enter();
+  wait_for_timer.wait();
+  wait_for_finish.wait();
   elapsed_time.freeze();
 
   for (auto& worker : workers) {
