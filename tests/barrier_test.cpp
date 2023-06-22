@@ -1,11 +1,33 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
+#include "pmembench/barrier.hpp"
+
 #include <doctest/doctest.h>
 
 #include <thread>
 #include <vector>
 
 #include "pmembench/sense_barrier.hpp"
+
+TEST_CASE("cond wait barrier") {
+  using namespace pmembench;
+
+  constexpr size_t nthreads = 10;
+  std::vector<std::thread> threads;
+  Barrier barrier(nthreads);
+
+  for (size_t i = 0; i < nthreads; ++i) {
+    threads.emplace_back([&, i] {
+      for (size_t j = 0; j < 1000; ++j) {
+        barrier.wait();
+      }
+    });
+  }
+
+  for (auto& t : threads) {
+    t.join();
+  }
+}
 
 TEST_CASE("SenseBarrier") {
   using namespace pmembench;
