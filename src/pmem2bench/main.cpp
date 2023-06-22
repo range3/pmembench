@@ -67,6 +67,7 @@ auto main(int argc, char* argv[]) -> int {
     ("prettify", "prettify the json output")
     ("g,granularity", "granularity realted to power-fail protected domain should be (page | cacheline | byte)", cxxopts::value<std::string>()->default_value("page"))
     ("non-temporal", "use non-temporal stores")
+    ("disable-set-affinity", "disable pthread_setaffinity_np")
     // ("a,align", "Alignment", cxxopts::value<size_t>()->default_value("4096"))
   ;
   // clang-format on
@@ -101,6 +102,7 @@ auto main(int argc, char* argv[]) -> int {
     exit(1);
   }
   bool op_non_temporal = result.count("non-temporal") != 0U;
+  bool op_set_affinity = result.count("disable-set-affinity") == 0U;
 
   // check arguments
   if (!op_read && !op_write) {
@@ -133,6 +135,7 @@ auto main(int argc, char* argv[]) -> int {
       {"accessPattern", op_random ? "random" : "sequential"},
       {"granularity", result["granularity"].as<std::string>()},
       {"nonTemporal", op_non_temporal},
+      {"set-affinity", op_set_affinity},
     }},
     {"results", {
       {"success", false},
@@ -216,6 +219,19 @@ auto main(int argc, char* argv[]) -> int {
 
   for (size_t i = 0; i < nthreads; ++i) {
     workers.emplace_back([&, i] {
+      if (op_set_affinity) {
+        cpu_set_t cpuset;
+        CPU_ZERO(&cpuset);
+        CPU_SET(i, &cpuset);
+        int rc = pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
+        if (rc != 0) {
+          std::cerr << "Error calling pthread_setaffinity_np: " << rc << std::endl;
+          fail = true;
+          barrier.wait();
+          return;
+        }
+      }
+
       auto random_string_data = pmembench::generateRandomAlphanumericString(block_size);
 
       buf = (char*)malloc(random_string_data.size());
@@ -237,6 +253,7 @@ auto main(int argc, char* argv[]) -> int {
       }
 
       barrier.wait();
+      if (fail) return;
       barrier.wait();
 
       if (!op_dry_run) {
@@ -275,11 +292,13 @@ auto main(int argc, char* argv[]) -> int {
 
   barrier.wait();
   pmembench::ElapsedTime elapsed_time;
-  elapsed_time.reset();
-  barrier.wait();
+  if (!fail) {
+    elapsed_time.reset();
+    barrier.wait();
 
-  barrier.wait();
-  elapsed_time.freeze();
+    barrier.wait();
+    elapsed_time.freeze();
+  }
 
   for (auto& worker : workers) {
     worker.join();
@@ -288,8 +307,10 @@ auto main(int argc, char* argv[]) -> int {
   benchmark_result["results"]["success"] = !fail;
   if (!fail) {
     benchmark_result["results"]["time"] = elapsed_time.msec();
-    benchmark_result["results"]["byte_per_sec"] = static_cast<double>(total_size) / elapsed_time.sec();
-    benchmark_result["results"]["MiB_per_sec"] = static_cast<double>(total_size >> 20) / elapsed_time.sec();
+    benchmark_result["results"]["byte_per_sec"]
+        = static_cast<double>(total_size) / elapsed_time.sec();
+    benchmark_result["results"]["MiB_per_sec"]
+        = static_cast<double>(total_size >> 20) / elapsed_time.sec();
     benchmark_result["results"]["IOPS"] = total_size / block_size / elapsed_time.sec();
     benchmark_result["results"]["MIOPS"] = total_size / block_size / elapsed_time.sec() / 1000'000;
     benchmark_result["results"]["addr"] = reinterpret_cast<uintptr_t>(addr);
