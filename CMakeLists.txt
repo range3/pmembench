@@ -10,13 +10,15 @@ project(
 )
 
 # ---- Include guards ----
-
 if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
   message(
     FATAL_ERROR
       "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there."
   )
 endif()
+
+# ---- Options ----
+option(BUILD_TESTS "Build testing executables" ON)
 
 # ---- Set default build type ----
 # Encourage user to specify a build type (e.g. Release, Debug, etc.), otherwise set it to Release.
@@ -62,6 +64,9 @@ CPMAddPackage(
   OPTIONS "JSON_BuildTests OFF" EXCLUDE_FROM_ALL YES
 )
 
+
+CPMAddPackage("gh:onqtam/doctest@2.4.11")
+
 # ---- Other dependencies ----
 # find_package(MPI REQUIRED)
 
@@ -70,10 +75,6 @@ CPMAddPackage(
 # ---- Add source files ----
 # Note: globbing sources is considered bad practice as CMake's generators may not detect new files
 # automatically. Keep that in mind when changing files, or explicitly mention them here.
-# file(GLOB_RECURSE src_hpp CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/rdbench/*.hpp")
-# file(GLOB_RECURSE src_cpp CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/rdbench/*.cpp")
-# file(GLOB_RECURSE src_h CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/rdbench/*.h")
-# file(GLOB_RECURSE src_c CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/rdbench/*.c")
 
 file(GLOB_RECURSE headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp")
 
@@ -90,3 +91,10 @@ target_include_directories(
 # ---- Create executable ----
 add_subdirectory(src/pmem2bench)
 add_subdirectory(src/pmemobjbench)
+
+# ---- Tests ----
+if (BUILD_TESTS)
+  enable_testing()
+
+  add_subdirectory(tests)
+endif()

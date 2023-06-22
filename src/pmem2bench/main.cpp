@@ -15,10 +15,10 @@
 #include <iostream>
 #include <mutex>
 #include <nlohmann/json.hpp>
-#include <pmembench/barrier.hpp>
 #include <pmembench/elapsedtime.hpp>
 #include <pmembench/gen_random_string.hpp>
 #include <pmembench/pretty_bytes.hpp>
+#include <pmembench/sense_barrier.hpp>
 #include <random>
 #include <sstream>
 #include <string>
@@ -38,6 +38,14 @@ void memcpy_erms(void* dst, void* src, size_t size);
 // thread_local char buf[2 * 1024 * 1024];
 thread_local char* buf;
 
+/*
+nthreads == 4
+|------------------------------------------total_size-------------------------------------------|
+|------------------stripe_size------------------|------------------stripe_size------------------|
+|  thread0  |  thread1  |  thread2  |  thread3  |  thread0  |  thread1  |  thread2  |  thread3  |
+|b0|b1|b2|..|b0|b1|b2|..|b0|b1|b2|..|b0|b1|b2|..|b0|b1|b2|..|b0|b1|b2|..|b0|b1|b2|..|b0|b1|b2|..|
+*/
+
 auto main(int argc, char* argv[]) -> int {
   cxxopts::Options options("pmem2bench",
                            "Benchmarking persistent memory resident array of "
@@ -48,7 +56,6 @@ auto main(int argc, char* argv[]) -> int {
     ("dry-run", "dry run")
     ("source", "select (fsdax | devdax | anon)", cxxopts::value<std::string>()->default_value("fsdax"))
     ("p,path", "/path/to/file or device", cxxopts::value<std::string>()->default_value("./pmem2bench.file"))
-    ("S,file_size", "file size (bytes)", cxxopts::value<std::string>()->default_value("1G"))
     ("b,block", "block size (bytes)", cxxopts::value<std::string>()->default_value("512"))
     ("s,stripe", "stripe size (bytes)", cxxopts::value<std::string>()->default_value("512"))
     ("n,nthreads", "number of threads", cxxopts::value<std::string>()->default_value("1"))
@@ -72,7 +79,6 @@ auto main(int argc, char* argv[]) -> int {
   }
 
   // convert pretty bytes to uint64_t
-  auto file_size = pmembench::prettyTo<uint64_t>(result["file_size"].as<std::string>());
   auto block_size = pmembench::prettyTo<uint64_t>(result["block"].as<std::string>());
   auto stripe_size = pmembench::prettyTo<uint64_t>(result["stripe"].as<std::string>());
   auto nthreads = pmembench::prettyTo<uint64_t>(result["nthreads"].as<std::string>());
@@ -119,7 +125,6 @@ auto main(int argc, char* argv[]) -> int {
     {"params", {
       {"source", result["source"].as<std::string>()},
       {"path", result["path"].as<std::string>()},
-      {"fileSize", file_size},
       {"blockSize", block_size},
       {"stripeSize", stripe_size},
       {"nthreads", nthreads},
@@ -132,7 +137,10 @@ auto main(int argc, char* argv[]) -> int {
     {"results", {
       {"success", false},
       {"time", 0.0},
-      {"throuput", 0.0},
+      {"byte_per_sec", 0.0},
+      {"MiB_per_sec", 0.0},
+      {"IOPS", 0.0},
+      {"MIOPS", 0.0},
       {"addr", 0ULL},
     }}
   };
@@ -152,7 +160,7 @@ auto main(int argc, char* argv[]) -> int {
   if (!op_dry_run) {
     if (op_source == "fsdax") {
       if (!pmb::createPmem2SourceFromFsdax(&src, result["path"].as<std::string>(),
-                                           static_cast<off64_t>(file_size))) {
+                                           static_cast<off64_t>(total_size))) {
         exit(1);
       }
     } else if (op_source == "devdax") {
@@ -160,7 +168,7 @@ auto main(int argc, char* argv[]) -> int {
         exit(1);
       }
     } else {
-      if (!pmb::createPmem2SourceFromAnonymous(&src, file_size)) {
+      if (!pmb::createPmem2SourceFromAnonymous(&src, total_size)) {
         exit(1);
       }
     }
@@ -197,73 +205,80 @@ auto main(int argc, char* argv[]) -> int {
   // size_t map_size = pmem2_map_get_size(map);
   // fmt::print("map size: {}\n", map_size);
 
-  auto random_string_data = pmembench::generateRandomAlphanumericString(block_size);
-
   auto stripe_count = total_size / stripe_size;
   auto strip_unit_size = stripe_size / nthreads;
   auto blocks_in_strip_unit = strip_unit_size / block_size;
   auto blocks_in_stripe = stripe_size / block_size;
 
-  std::vector<size_t> access_offset(blocks_in_strip_unit);
-  // 0 1 2 3 4 ...
-  std::iota(access_offset.begin(), access_offset.end(), 0);
-  // randomize offset
-  if (op_random) {
-    std::shuffle(access_offset.begin(), access_offset.end(), std::mt19937{std::random_device{}()});
-  }
-
   std::vector<std::thread> workers;
-  pmembench::Barrier wait_for_ready(nthreads + 1);
-  pmembench::Barrier wait_for_timer(nthreads + 1);
-  pmembench::Barrier wait_for_finish(nthreads + 1);
+  pmembench::SenseBarrier barrier(nthreads + 1);
   std::atomic<bool> fail(false);
 
   for (size_t i = 0; i < nthreads; ++i) {
     workers.emplace_back([&, i] {
+      auto random_string_data = pmembench::generateRandomAlphanumericString(block_size);
+
       buf = (char*)malloc(random_string_data.size());
-      // buf = (char*)malloc(2*1024*1024);
+      memcpy(buf, random_string_data.data(), random_string_data.size());
       // buf = (char*)aligned_alloc(op_alignment, 2*1024*1024);
       // buf = gbuf + i*2*1024*1024;
       // uintptr_t iptr = reinterpret_cast<uintptr_t>(buf);
       // fmt::print("{}: {}, {}, {}, {}\n", i, iptr, iptr%4*1024,
       // iptr%2*1024*1024, iptr/(2*1024*1024)); std::string buf =
       // random_string_data; memset(buf, 'a', 1*1024*1024);
-      memcpy(buf, random_string_data.data(), random_string_data.size());
-      wait_for_ready.enter();
-      wait_for_timer.enter();
 
-      for (size_t stripe = 0; stripe < stripe_count; ++stripe) {
-        size_t strip_ofs = stripe * blocks_in_stripe + i * blocks_in_strip_unit;
-        for (size_t j = 0; j < blocks_in_strip_unit; ++j) {
-          size_t block_ofs = access_offset[j] + strip_ofs;
-          if (op_dry_run) {
-            if (op_verbose) {
-              fmt::print("t:{}\tblock_idx:{}\tblock_size:{}\n", i, block_ofs, block_size);
+      std::vector<size_t> access_offset(blocks_in_strip_unit);
+      // 0 1 2 3 4 ...
+      std::iota(access_offset.begin(), access_offset.end(), 0);
+      // randomize offset
+      if (op_random) {
+        std::shuffle(access_offset.begin(), access_offset.end(),
+                     std::mt19937{std::random_device{}()});
+      }
+
+      barrier.wait();
+      barrier.wait();
+
+      if (!op_dry_run) {
+        if (op_write) {
+          for (size_t stripe_idx = 0; stripe_idx < stripe_count; ++stripe_idx) {
+            size_t start_block_of_strip = stripe_idx * blocks_in_stripe + i * blocks_in_strip_unit;
+            for (auto const block_ofs_in_strip : access_offset) {
+              size_t block_ofs = start_block_of_strip + block_ofs_in_strip;
+              memcpy_fn(addr + block_ofs * block_size, buf, block_size, memcpy_flag);
             }
-
-          } else if (op_write) {
-            memcpy_fn(addr + block_ofs * block_size, buf, block_size, memcpy_flag);
-            // memcpy_fn(addr + block_ofs * block_size, buf.data(), block_size,
-            //           memcpy_flag);
-          } else {
-            memcpy(buf, addr + block_ofs * block_size, block_size);
-            // memcpy_erms(&buf[0], addr + block_ofs * block_size, block_size);
-            // std::copy(addr + block_ofs * block_size, addr + (block_ofs+1) *
-            // block_size, buf);
+          }
+        } else {
+          for (size_t stripe_idx = 0; stripe_idx < stripe_count; ++stripe_idx) {
+            size_t start_block_of_strip = stripe_idx * blocks_in_stripe + i * blocks_in_strip_unit;
+            for (auto const block_ofs_in_strip : access_offset) {
+              size_t block_ofs = start_block_of_strip + block_ofs_in_strip;
+              memcpy(buf, addr + block_ofs * block_size, block_size);
+              // memcpy_erms(&buf[0], addr + block_ofs * block_size, block_size);
+            }
+          }
+        }
+      } else if (op_verbose) {
+        for (size_t stripe_idx = 0; stripe_idx < stripe_count; ++stripe_idx) {
+          size_t start_block_of_strip = stripe_idx * blocks_in_stripe + i * blocks_in_strip_unit;
+          for (auto const block_ofs_in_strip : access_offset) {
+            size_t block_ofs = start_block_of_strip + block_ofs_in_strip;
+            fmt::print("tid:{}\tblock_idx:{}\tblock_size:{}\n", i, block_ofs, block_size);
           }
         }
       }
-      wait_for_finish.enter();
-      // free(buf);
+
+      barrier.wait();
+      free(buf);
     });
   }
 
-  wait_for_ready.enter();
+  barrier.wait();
   pmembench::ElapsedTime elapsed_time;
   elapsed_time.reset();
-  wait_for_timer.enter();
+  barrier.wait();
 
-  wait_for_finish.enter();
+  barrier.wait();
   elapsed_time.freeze();
 
   for (auto& worker : workers) {
@@ -273,7 +288,10 @@ auto main(int argc, char* argv[]) -> int {
   benchmark_result["results"]["success"] = !fail;
   if (!fail) {
     benchmark_result["results"]["time"] = elapsed_time.msec();
-    benchmark_result["results"]["throuput"] = static_cast<double>(total_size) / elapsed_time.sec();
+    benchmark_result["results"]["byte_per_sec"] = static_cast<double>(total_size) / elapsed_time.sec();
+    benchmark_result["results"]["MiB_per_sec"] = static_cast<double>(total_size >> 20) / elapsed_time.sec();
+    benchmark_result["results"]["IOPS"] = total_size / block_size / elapsed_time.sec();
+    benchmark_result["results"]["MIOPS"] = total_size / block_size / elapsed_time.sec() / 1000'000;
     benchmark_result["results"]["addr"] = reinterpret_cast<uintptr_t>(addr);
 
     if (op_verbose) {
