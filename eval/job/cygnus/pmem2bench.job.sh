@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -A NBB
-#PBS -q gpu
+#PBS -q pmem-i
 #PBS -l elapstim_req=24:00:00
 #PBS -T distrib 
 
