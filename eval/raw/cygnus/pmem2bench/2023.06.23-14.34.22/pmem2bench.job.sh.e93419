@@ -1,0 +1,171 @@
++ param_source=devdax
++ block_size=512
++ ntstore=false
++ access_pattern=random
++ mkdir -p /work/NBB/hiraga/work/pmembench/eval/raw/cygnus/pmem2bench/2023.06.23-14.34.22
++ cd /work/NBB/hiraga/work/pmembench
++ spack env activate -d spack/envs/pnode
++ : this is a shell function from: /work/NBB/hiraga/.spack/share/spack/setup-env.sh
++ : the real spack script is here: /work/NBB/hiraga/.spack/bin/spack
++ _spack_shell_wrapper env activate -d spack/envs/pnode
++ for var in LD_LIBRARY_PATH DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH
++ eval 'if [ -n "${LD_LIBRARY_PATH-}" ]; then export SPACK_LD_LIBRARY_PATH=${LD_LIBRARY_PATH}; fi'
+++ '[' -n '' ']'
++ for var in LD_LIBRARY_PATH DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH
++ eval 'if [ -n "${DYLD_LIBRARY_PATH-}" ]; then export SPACK_DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}; fi'
+++ '[' -n '' ']'
++ for var in LD_LIBRARY_PATH DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH
++ eval 'if [ -n "${DYLD_FALLBACK_LIBRARY_PATH-}" ]; then export SPACK_DYLD_FALLBACK_LIBRARY_PATH=${DYLD_FALLBACK_LIBRARY_PATH}; fi'
+++ '[' -n '' ']'
++ '[' -n '' ']'
++ _sp_flags=
++ '[' '!' -z x ']'
++ '[' env '!=' env ']'
++ '[' -n '' ']'
++ '[' '' '!=' '' ']'
++ _sp_subcommand=
++ '[' '!' -z x ']'
++ _sp_subcommand=env
++ shift
++ case $_sp_subcommand in
++ _sp_arg=
++ '[' -n activate ']'
++ _sp_arg=activate
++ shift
++ '[' activate = -h ']'
++ '[' activate = --help ']'
++ case $_sp_arg in
++ _a=' -d spack/envs/pnode'
++ '[' -z x ']'
++ '[' ' -d spack/envs/pnode' '!=' ' -d spack/envs/pnode' ']'
++ '[' ' -d spack/envs/pnode' '!=' ' -d spack/envs/pnode' ']'
++ '[' ' -d spack/envs/pnode' '!=' ' -d spack/envs/pnode' ']'
++ '[' ' -d spack/envs/pnode' '!=' ' -d spack/envs/pnode' ']'
+++ command spack env activate --sh -d spack/envs/pnode
+++ spack env activate --sh -d spack/envs/pnode
++ stdout='export SPACK_ENV=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode;
+alias despacktivate='\''spack env deactivate'\'';
+export ACLOCAL_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/share/aclocal;
+export CMAKE_PREFIX_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view;
+export LD_LIBRARY_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib64;
+export MANPATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/share/man:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/man:/opt/nec/nqsv/man/ja/man1:.:;
+export PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/bin:/work/NBB/hiraga/.spack/bin:/home/NBB/hiraga/.anyenv/envs/nodenv/shims:/home/NBB/hiraga/.anyenv/envs/nodenv/bin:/home/NBB/hiraga/.anyenv/bin:/home/NBB/hiraga/.local/bin:/home/NBB/hiraga/.bin:/bin:/usr/bin:/usr/ucb:/snap/bin;
+export PKG_CONFIG_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib/pkgconfig:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/share/pkgconfig:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib64/pkgconfig;'
++ eval 'export SPACK_ENV=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode;
+alias despacktivate='\''spack env deactivate'\'';
+export ACLOCAL_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/share/aclocal;
+export CMAKE_PREFIX_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view;
+export LD_LIBRARY_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib64;
+export MANPATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/share/man:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/man:/opt/nec/nqsv/man/ja/man1:.:;
+export PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/bin:/work/NBB/hiraga/.spack/bin:/home/NBB/hiraga/.anyenv/envs/nodenv/shims:/home/NBB/hiraga/.anyenv/envs/nodenv/bin:/home/NBB/hiraga/.anyenv/bin:/home/NBB/hiraga/.local/bin:/home/NBB/hiraga/.bin:/bin:/usr/bin:/usr/ucb:/snap/bin;
+export PKG_CONFIG_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib/pkgconfig:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/share/pkgconfig:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib64/pkgconfig;'
+++ export SPACK_ENV=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode
+++ SPACK_ENV=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode
+++ alias 'despacktivate=spack env deactivate'
+++ export ACLOCAL_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/share/aclocal
+++ ACLOCAL_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/share/aclocal
+++ export CMAKE_PREFIX_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view
+++ CMAKE_PREFIX_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view
+++ export LD_LIBRARY_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib64
+++ LD_LIBRARY_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib64
+++ export MANPATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/share/man:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/man:/opt/nec/nqsv/man/ja/man1:.:
+++ MANPATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/share/man:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/man:/opt/nec/nqsv/man/ja/man1:.:
+++ export PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/bin:/work/NBB/hiraga/.spack/bin:/home/NBB/hiraga/.anyenv/envs/nodenv/shims:/home/NBB/hiraga/.anyenv/envs/nodenv/bin:/home/NBB/hiraga/.anyenv/bin:/home/NBB/hiraga/.local/bin:/home/NBB/hiraga/.bin:/bin:/usr/bin:/usr/ucb:/snap/bin
+++ PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/bin:/work/NBB/hiraga/.spack/bin:/home/NBB/hiraga/.anyenv/envs/nodenv/shims:/home/NBB/hiraga/.anyenv/envs/nodenv/bin:/home/NBB/hiraga/.anyenv/bin:/home/NBB/hiraga/.local/bin:/home/NBB/hiraga/.bin:/bin:/usr/bin:/usr/ucb:/snap/bin
+++ export PKG_CONFIG_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib/pkgconfig:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/share/pkgconfig:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib64/pkgconfig
+++ PKG_CONFIG_PATH=/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib/pkgconfig:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/share/pkgconfig:/work/1/NBB/hiraga/work/pmembench/spack/envs/pnode/.spack-env/view/lib64/pkgconfig
++ return
++ return 0
++ BENCHMARK_EXE=/work/NBB/hiraga/work/pmembench/install/bin/pmem2bench
++ size_per_thread=8589934592
++ ntstore_opt=
++ ntstore_label=t
++ '[' false = true ']'
++ random_access_opt=
++ '[' random = random ']'
++ random_access_opt=--random
++ file_path=/dev/dax0.0
++ '[' devdax = fsdax ']'
++ nthreads_list=(1 2 4 8 16)
++ max_iter=3
++ cmd_numactl=(numactl --cpunodebind=0 --membind=0 --)
++ for nthreads in "${nthreads_list[@]}"
++ total_size=8589934592
+++ seq 3
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 1 --total 8589934592 --stripe 8589934592 --block 512 --random --write --prettify
++ '[' false = true ']'
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 1 --total 8589934592 --stripe 8589934592 --block 512 --random --write --prettify
++ '[' false = true ']'
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 1 --total 8589934592 --stripe 8589934592 --block 512 --random --write --prettify
++ '[' false = true ']'
++ '[' devdax = fsdax ']'
++ for nthreads in "${nthreads_list[@]}"
++ total_size=17179869184
+++ seq 3
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 2 --total 17179869184 --stripe 17179869184 --block 512 --random --write --prettify
++ '[' false = true ']'
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 2 --total 17179869184 --stripe 17179869184 --block 512 --random --write --prettify
++ '[' false = true ']'
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 2 --total 17179869184 --stripe 17179869184 --block 512 --random --write --prettify
++ '[' false = true ']'
++ '[' devdax = fsdax ']'
++ for nthreads in "${nthreads_list[@]}"
++ total_size=34359738368
+++ seq 3
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 4 --total 34359738368 --stripe 34359738368 --block 512 --random --write --prettify
++ '[' false = true ']'
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 4 --total 34359738368 --stripe 34359738368 --block 512 --random --write --prettify
++ '[' false = true ']'
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 4 --total 34359738368 --stripe 34359738368 --block 512 --random --write --prettify
++ '[' false = true ']'
++ '[' devdax = fsdax ']'
++ for nthreads in "${nthreads_list[@]}"
++ total_size=68719476736
+++ seq 3
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 8 --total 68719476736 --stripe 68719476736 --block 512 --random --write --prettify
++ '[' false = true ']'
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 8 --total 68719476736 --stripe 68719476736 --block 512 --random --write --prettify
++ '[' false = true ']'
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 8 --total 68719476736 --stripe 68719476736 --block 512 --random --write --prettify
++ '[' false = true ']'
++ '[' devdax = fsdax ']'
++ for nthreads in "${nthreads_list[@]}"
++ total_size=137438953472
+++ seq 3
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 16 --total 137438953472 --stripe 137438953472 --block 512 --random --write --prettify
++ '[' false = true ']'
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 16 --total 137438953472 --stripe 137438953472 --block 512 --random --write --prettify
++ '[' false = true ']'
++ for iter in $(seq $max_iter)
++ numactl --cpunodebind=0 --membind=0 -- /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source devdax --path /dev/dax0.0 --nthreads 16 --total 137438953472 --stripe 137438953472 --block 512 --random --write --prettify
++ '[' false = true ']'
++ '[' devdax = fsdax ']'
+
+============================================================
+Request ID:             93419.nqsv
+Request Name:           pmem2bench.job.sh
+Queue:                  pmem-b@nqsv
+Number of Jobs:         1
+User Name:              hiraga
+Group Name:             NBB
+Created Request Time:   Fri Jun 23 14:34:23 2023
+Started Request Time:   Fri Jun 23 15:06:35 2023
+Ended Request Time:     Fri Jun 23 15:09:30 2023
+Resources Information:
+  Elapse:               177S
+  Remaining Elapse:     86223S
+============================================================
