@@ -20,10 +20,10 @@ inline auto createPmem2SourceFromFsdax(struct pmem2_source** src,
       std::perror(path.data());
       return false;
     }
-    if (ftruncate64(fd, file_size) != 0) {
-      std::perror("ftruncate64");
-      return false;
-    }
+  }
+  if (ftruncate64(fd, file_size) != 0) {
+    std::perror("ftruncate64");
+    return false;
   }
 
   if (pmem2_source_from_fd(src, fd) != 0) {
