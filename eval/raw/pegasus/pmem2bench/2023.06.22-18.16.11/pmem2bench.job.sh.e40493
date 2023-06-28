@@ -1,0 +1,188 @@
++ param_source=anon
++ block_size=256K
++ ntstore=true
++ access_pattern=random
++ mkdir -p /work/NBB/hiraga/work/pmembench/eval/raw/pegasus/pmem2bench/2023.06.22-18.16.11
++ cd /work/NBB/hiraga/work/pmembench
++ spack env activate -d spack/envs/pegasus
++ : this is a shell function from: /home/NBB/hiraga/.cache/spack/share/spack/setup-env.sh
++ : the real spack script is here: /home/NBB/hiraga/.cache/spack/bin/spack
++ _spack_shell_wrapper env activate -d spack/envs/pegasus
++ for var in LD_LIBRARY_PATH DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH
++ eval 'if [ -n "${LD_LIBRARY_PATH-}" ]; then export SPACK_LD_LIBRARY_PATH=${LD_LIBRARY_PATH}; fi'
+++ '[' -n '' ']'
++ for var in LD_LIBRARY_PATH DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH
++ eval 'if [ -n "${DYLD_LIBRARY_PATH-}" ]; then export SPACK_DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}; fi'
+++ '[' -n '' ']'
++ for var in LD_LIBRARY_PATH DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH
++ eval 'if [ -n "${DYLD_FALLBACK_LIBRARY_PATH-}" ]; then export SPACK_DYLD_FALLBACK_LIBRARY_PATH=${DYLD_FALLBACK_LIBRARY_PATH}; fi'
+++ '[' -n '' ']'
++ '[' -n '' ']'
++ _sp_flags=
++ '[' '!' -z x ']'
++ '[' env '!=' env ']'
++ '[' -n '' ']'
++ '[' '' '!=' '' ']'
++ _sp_subcommand=
++ '[' '!' -z x ']'
++ _sp_subcommand=env
++ shift
++ case $_sp_subcommand in
++ _sp_arg=
++ '[' -n activate ']'
++ _sp_arg=activate
++ shift
++ '[' activate = -h ']'
++ '[' activate = --help ']'
++ case $_sp_arg in
++ _a=' -d spack/envs/pegasus'
++ '[' -z x ']'
++ '[' ' -d spack/envs/pegasus' '!=' ' -d spack/envs/pegasus' ']'
++ '[' ' -d spack/envs/pegasus' '!=' ' -d spack/envs/pegasus' ']'
++ '[' ' -d spack/envs/pegasus' '!=' ' -d spack/envs/pegasus' ']'
++ '[' ' -d spack/envs/pegasus' '!=' ' -d spack/envs/pegasus' ']'
+++ command spack env activate --sh -d spack/envs/pegasus
+++ spack env activate --sh -d spack/envs/pegasus
++ stdout='export SPACK_ENV=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus;
+alias despacktivate='\''spack env deactivate'\'';
+export ACLOCAL_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/aclocal;
+export CMAKE_PREFIX_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view;
+export LD_LIBRARY_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64;
+export MANPATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/man:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/man:/opt/nec/nqsv/man/ja/man1:.:;
+export PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/bin:/home/NBB/hiraga/.cache/spack/bin:/home/NBB/hiraga/.local/bin:/home/NBB/hiraga/.bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/condabin:/bin:/usr/bin:/usr/ucb:/snap/bin:/system/tool/bin:/opt/nec/nqsv/bin:/opt/memverge/bin;
+export PKG_CONFIG_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64/pkgconfig;'
++ eval 'export SPACK_ENV=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus;
+alias despacktivate='\''spack env deactivate'\'';
+export ACLOCAL_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/aclocal;
+export CMAKE_PREFIX_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view;
+export LD_LIBRARY_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64;
+export MANPATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/man:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/man:/opt/nec/nqsv/man/ja/man1:.:;
+export PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/bin:/home/NBB/hiraga/.cache/spack/bin:/home/NBB/hiraga/.local/bin:/home/NBB/hiraga/.bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/condabin:/bin:/usr/bin:/usr/ucb:/snap/bin:/system/tool/bin:/opt/nec/nqsv/bin:/opt/memverge/bin;
+export PKG_CONFIG_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64/pkgconfig;'
+++ export SPACK_ENV=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus
+++ SPACK_ENV=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus
+++ alias 'despacktivate=spack env deactivate'
+++ export ACLOCAL_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/aclocal
+++ ACLOCAL_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/aclocal
+++ export CMAKE_PREFIX_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view
+++ CMAKE_PREFIX_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view
+++ export LD_LIBRARY_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64
+++ LD_LIBRARY_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64
+++ export MANPATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/man:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/man:/opt/nec/nqsv/man/ja/man1:.:
+++ MANPATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/man:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/man:/opt/nec/nqsv/man/ja/man1:.:
+++ export PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/bin:/home/NBB/hiraga/.cache/spack/bin:/home/NBB/hiraga/.local/bin:/home/NBB/hiraga/.bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/condabin:/bin:/usr/bin:/usr/ucb:/snap/bin:/system/tool/bin:/opt/nec/nqsv/bin:/opt/memverge/bin
+++ PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/bin:/home/NBB/hiraga/.cache/spack/bin:/home/NBB/hiraga/.local/bin:/home/NBB/hiraga/.bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/condabin:/bin:/usr/bin:/usr/ucb:/snap/bin:/system/tool/bin:/opt/nec/nqsv/bin:/opt/memverge/bin
+++ export PKG_CONFIG_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64/pkgconfig
+++ PKG_CONFIG_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64/pkgconfig
++ return
++ return 0
++ BENCHMARK_EXE=/work/NBB/hiraga/work/pmembench/install/bin/pmem2bench
++ size_per_thread=8589934592
++ ntstore_opt=
++ ntstore_label=t
++ '[' true = true ']'
++ ntstore_opt=--non-temporal
++ ntstore_label=nt
++ random_access_opt=
++ '[' random = random ']'
++ random_access_opt=--random
++ file_path=/dev/dax0.0
++ '[' anon = fsdax ']'
++ nthreads_list=(1 2 4 8 16 32 48)
++ max_iter=3
++ for nthreads in "${nthreads_list[@]}"
++ total_size=8589934592
+++ seq 3
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 1 --total 8589934592 --stripe 8589934592 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 1 --total 8589934592 --stripe 8589934592 --block 256K --non-temporal --random --read --prettify
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 1 --total 8589934592 --stripe 8589934592 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 1 --total 8589934592 --stripe 8589934592 --block 256K --non-temporal --random --read --prettify
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 1 --total 8589934592 --stripe 8589934592 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 1 --total 8589934592 --stripe 8589934592 --block 256K --non-temporal --random --read --prettify
++ for nthreads in "${nthreads_list[@]}"
++ total_size=17179869184
+++ seq 3
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 2 --total 17179869184 --stripe 17179869184 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 2 --total 17179869184 --stripe 17179869184 --block 256K --non-temporal --random --read --prettify
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 2 --total 17179869184 --stripe 17179869184 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 2 --total 17179869184 --stripe 17179869184 --block 256K --non-temporal --random --read --prettify
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 2 --total 17179869184 --stripe 17179869184 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 2 --total 17179869184 --stripe 17179869184 --block 256K --non-temporal --random --read --prettify
++ for nthreads in "${nthreads_list[@]}"
++ total_size=34359738368
+++ seq 3
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 4 --total 34359738368 --stripe 34359738368 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 4 --total 34359738368 --stripe 34359738368 --block 256K --non-temporal --random --read --prettify
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 4 --total 34359738368 --stripe 34359738368 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 4 --total 34359738368 --stripe 34359738368 --block 256K --non-temporal --random --read --prettify
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 4 --total 34359738368 --stripe 34359738368 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 4 --total 34359738368 --stripe 34359738368 --block 256K --non-temporal --random --read --prettify
++ for nthreads in "${nthreads_list[@]}"
++ total_size=68719476736
+++ seq 3
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 8 --total 68719476736 --stripe 68719476736 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 8 --total 68719476736 --stripe 68719476736 --block 256K --non-temporal --random --read --prettify
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 8 --total 68719476736 --stripe 68719476736 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 8 --total 68719476736 --stripe 68719476736 --block 256K --non-temporal --random --read --prettify
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 8 --total 68719476736 --stripe 68719476736 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 8 --total 68719476736 --stripe 68719476736 --block 256K --non-temporal --random --read --prettify
++ for nthreads in "${nthreads_list[@]}"
++ total_size=137438953472
+++ seq 3
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 16 --total 137438953472 --stripe 137438953472 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 16 --total 137438953472 --stripe 137438953472 --block 256K --non-temporal --random --read --prettify
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 16 --total 137438953472 --stripe 137438953472 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 16 --total 137438953472 --stripe 137438953472 --block 256K --non-temporal --random --read --prettify
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 16 --total 137438953472 --stripe 137438953472 --block 256K --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 16 --total 137438953472 --stripe 137438953472 --block 256K --non-temporal --random --read --prettify
++ for nthreads in "${nthreads_list[@]}"
++ total_size=274877906944
+++ seq 3
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source anon --path /dev/dax0.0 --nthreads 32 --total 274877906944 --stripe 274877906944 --block 256K --non-temporal --random --write --prettify
+pmem2_map_new: mmap: Cannot allocate memory
+
+============================================================
+Request ID:             40493.nqsv
+Request Name:           pmem2bench.job.sh
+Queue:                  gpu@nqsv
+Number of Jobs:         1
+User Name:              hiraga
+Group Name:             NBB
+Created Request Time:   Thu Jun 22 18:16:19 2023
+Started Request Time:   Thu Jun 22 18:20:47 2023
+Ended Request Time:     Thu Jun 22 18:27:42 2023
+Resources Information:
+  Elapse:               415S
+  Remaining Elapse:     3185S
+============================================================

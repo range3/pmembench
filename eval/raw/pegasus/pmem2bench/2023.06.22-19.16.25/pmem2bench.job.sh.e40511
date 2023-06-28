@@ -1,0 +1,129 @@
++ param_source=fsdax
++ block_size=128
++ ntstore=true
++ access_pattern=random
++ mkdir -p /work/NBB/hiraga/work/pmembench/eval/raw/pegasus/pmem2bench/2023.06.22-19.16.25
++ cd /work/NBB/hiraga/work/pmembench
++ spack env activate -d spack/envs/pegasus
++ : this is a shell function from: /home/NBB/hiraga/.cache/spack/share/spack/setup-env.sh
++ : the real spack script is here: /home/NBB/hiraga/.cache/spack/bin/spack
++ _spack_shell_wrapper env activate -d spack/envs/pegasus
++ for var in LD_LIBRARY_PATH DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH
++ eval 'if [ -n "${LD_LIBRARY_PATH-}" ]; then export SPACK_LD_LIBRARY_PATH=${LD_LIBRARY_PATH}; fi'
+++ '[' -n '' ']'
++ for var in LD_LIBRARY_PATH DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH
++ eval 'if [ -n "${DYLD_LIBRARY_PATH-}" ]; then export SPACK_DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}; fi'
+++ '[' -n '' ']'
++ for var in LD_LIBRARY_PATH DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH
++ eval 'if [ -n "${DYLD_FALLBACK_LIBRARY_PATH-}" ]; then export SPACK_DYLD_FALLBACK_LIBRARY_PATH=${DYLD_FALLBACK_LIBRARY_PATH}; fi'
+++ '[' -n '' ']'
++ '[' -n '' ']'
++ _sp_flags=
++ '[' '!' -z x ']'
++ '[' env '!=' env ']'
++ '[' -n '' ']'
++ '[' '' '!=' '' ']'
++ _sp_subcommand=
++ '[' '!' -z x ']'
++ _sp_subcommand=env
++ shift
++ case $_sp_subcommand in
++ _sp_arg=
++ '[' -n activate ']'
++ _sp_arg=activate
++ shift
++ '[' activate = -h ']'
++ '[' activate = --help ']'
++ case $_sp_arg in
++ _a=' -d spack/envs/pegasus'
++ '[' -z x ']'
++ '[' ' -d spack/envs/pegasus' '!=' ' -d spack/envs/pegasus' ']'
++ '[' ' -d spack/envs/pegasus' '!=' ' -d spack/envs/pegasus' ']'
++ '[' ' -d spack/envs/pegasus' '!=' ' -d spack/envs/pegasus' ']'
++ '[' ' -d spack/envs/pegasus' '!=' ' -d spack/envs/pegasus' ']'
+++ command spack env activate --sh -d spack/envs/pegasus
+++ spack env activate --sh -d spack/envs/pegasus
++ stdout='export SPACK_ENV=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus;
+alias despacktivate='\''spack env deactivate'\'';
+export ACLOCAL_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/aclocal;
+export CMAKE_PREFIX_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view;
+export LD_LIBRARY_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64;
+export MANPATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/man:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/man:/opt/nec/nqsv/man/ja/man1:.:;
+export PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/bin:/home/NBB/hiraga/.cache/spack/bin:/home/NBB/hiraga/.local/bin:/home/NBB/hiraga/.bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/condabin:/bin:/usr/bin:/usr/ucb:/snap/bin:/system/tool/bin:/opt/nec/nqsv/bin:/opt/memverge/bin;
+export PKG_CONFIG_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64/pkgconfig;'
++ eval 'export SPACK_ENV=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus;
+alias despacktivate='\''spack env deactivate'\'';
+export ACLOCAL_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/aclocal;
+export CMAKE_PREFIX_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view;
+export LD_LIBRARY_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64;
+export MANPATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/man:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/man:/opt/nec/nqsv/man/ja/man1:.:;
+export PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/bin:/home/NBB/hiraga/.cache/spack/bin:/home/NBB/hiraga/.local/bin:/home/NBB/hiraga/.bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/condabin:/bin:/usr/bin:/usr/ucb:/snap/bin:/system/tool/bin:/opt/nec/nqsv/bin:/opt/memverge/bin;
+export PKG_CONFIG_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64/pkgconfig;'
+++ export SPACK_ENV=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus
+++ SPACK_ENV=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus
+++ alias 'despacktivate=spack env deactivate'
+++ export ACLOCAL_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/aclocal
+++ ACLOCAL_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/aclocal
+++ export CMAKE_PREFIX_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view
+++ CMAKE_PREFIX_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view
+++ export LD_LIBRARY_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64
+++ LD_LIBRARY_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64
+++ export MANPATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/man:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/man:/opt/nec/nqsv/man/ja/man1:.:
+++ MANPATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/man:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/man:/opt/nec/nqsv/man/ja/man1:.:
+++ export PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/bin:/home/NBB/hiraga/.cache/spack/bin:/home/NBB/hiraga/.local/bin:/home/NBB/hiraga/.bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/condabin:/bin:/usr/bin:/usr/ucb:/snap/bin:/system/tool/bin:/opt/nec/nqsv/bin:/opt/memverge/bin
+++ PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/bin:/home/NBB/hiraga/.cache/spack/bin:/home/NBB/hiraga/.local/bin:/home/NBB/hiraga/.bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/bin:/system/apps/ubuntu/20.04-202210/oneapi/2022.3.1/intelpython/latest/condabin:/bin:/usr/bin:/usr/ucb:/snap/bin:/system/tool/bin:/opt/nec/nqsv/bin:/opt/memverge/bin
+++ export PKG_CONFIG_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64/pkgconfig
+++ PKG_CONFIG_PATH=/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/share/pkgconfig:/work/0/NBB/hiraga/work/pmembench/spack/envs/pegasus/.spack-env/view/lib64/pkgconfig
++ return
++ return 0
++ BENCHMARK_EXE=/work/NBB/hiraga/work/pmembench/install/bin/pmem2bench
++ size_per_thread=8589934592
++ ntstore_opt=
++ ntstore_label=t
++ '[' true = true ']'
++ ntstore_opt=--non-temporal
++ ntstore_label=nt
++ random_access_opt=
++ '[' random = random ']'
++ random_access_opt=--random
++ file_path=/dev/dax0.0
++ '[' fsdax = fsdax ']'
++ file_path=/pmem/pmem2bench.bin
++ nthreads_list=(1 2 4 8 16 32 48)
++ max_iter=3
++ for nthreads in "${nthreads_list[@]}"
++ total_size=8589934592
+++ seq 3
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source fsdax --path /pmem/pmem2bench.bin --nthreads 1 --total 8589934592 --stripe 8589934592 --block 128 --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source fsdax --path /pmem/pmem2bench.bin --nthreads 1 --total 8589934592 --stripe 8589934592 --block 128 --non-temporal --random --read --prettify
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source fsdax --path /pmem/pmem2bench.bin --nthreads 1 --total 8589934592 --stripe 8589934592 --block 128 --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source fsdax --path /pmem/pmem2bench.bin --nthreads 1 --total 8589934592 --stripe 8589934592 --block 128 --non-temporal --random --read --prettify
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source fsdax --path /pmem/pmem2bench.bin --nthreads 1 --total 8589934592 --stripe 8589934592 --block 128 --non-temporal --random --write --prettify
++ '[' true = true ']'
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source fsdax --path /pmem/pmem2bench.bin --nthreads 1 --total 8589934592 --stripe 8589934592 --block 128 --non-temporal --random --read --prettify
++ for nthreads in "${nthreads_list[@]}"
++ total_size=17179869184
+++ seq 3
++ for iter in $(seq $max_iter)
++ /work/NBB/hiraga/work/pmembench/install/bin/pmem2bench --source fsdax --path /pmem/pmem2bench.bin --nthreads 2 --total 17179869184 --stripe 17179869184 --block 128 --non-temporal --random --write --prettify
+/var/opt/nec/nqsv/jsv/jobfile/0.40511.10/user_script: 61 行: 3233525 Segmentation fault      (コアダンプ) "${BENCHMARK_EXE}" --source $param_source --path $file_path --nthreads $nthreads --total $total_size --stripe $total_size --block $block_size $ntstore_opt $random_access_opt --write --prettify > "${OUTPUT_DIR}/w_${access_pattern}_${ntstore_label}_${param_source}_${block_size}_${nthreads}_${iter}.json"
+
+============================================================
+Request ID:             40511.nqsv
+Request Name:           pmem2bench.job.sh
+Queue:                  gpu@nqsv
+Number of Jobs:         1
+User Name:              hiraga
+Group Name:             NBB
+Created Request Time:   Thu Jun 22 19:16:25 2023
+Started Request Time:   Thu Jun 22 19:17:11 2023
+Ended Request Time:     Thu Jun 22 19:18:41 2023
+Resources Information:
+  Elapse:               90S
+  Remaining Elapse:     3510S
+============================================================

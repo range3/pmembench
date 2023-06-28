@@ -1,0 +1,24 @@
+{
+  "params": {
+    "accessPattern": "sequential",
+    "accessType": "write",
+    "blockSize": 256,
+    "granularity": "page",
+    "nonTemporal": true,
+    "nthreads": 1,
+    "path": "/pmem/pmem2bench.bin",
+    "set-affinity": true,
+    "source": "fsdax",
+    "stripeSize": 8589934592,
+    "totalSize": 8589934592
+  },
+  "results": {
+    "IOPS": 4067404.8327445365,
+    "MIOPS": 4.067404832744536,
+    "MiB_per_sec": 993.0187579942716,
+    "addr": 22817013760000,
+    "byte_per_sec": 1041255637.1826013,
+    "success": true,
+    "time": 8249.592401
+  }
+}
