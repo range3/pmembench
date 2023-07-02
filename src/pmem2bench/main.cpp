@@ -270,7 +270,8 @@ auto main(int argc, char* argv[]) -> int {
             size_t start_block_of_strip = stripe_idx * blocks_in_stripe + i * blocks_in_strip_unit;
             for (auto const block_ofs_in_strip : access_offset) {
               size_t block_ofs = start_block_of_strip + block_ofs_in_strip;
-              memcpy(buf, addr + block_ofs * block_size, block_size);
+              // memcpy(buf, addr + block_ofs * block_size, block_size);
+              memcpy_fn(buf, addr + block_ofs * block_size, block_size, memcpy_flag);
               // memcpy_erms(&buf[0], addr + block_ofs * block_size, block_size);
             }
           }
