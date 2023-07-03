@@ -15,10 +15,10 @@
 #include <iostream>
 #include <mutex>
 #include <nlohmann/json.hpp>
+#include <pmembench/barrier.hpp>
 #include <pmembench/elapsedtime.hpp>
 #include <pmembench/gen_random_string.hpp>
 #include <pmembench/pretty_bytes.hpp>
-#include <pmembench/barrier.hpp>
 #include <random>
 #include <sstream>
 #include <string>
@@ -67,6 +67,7 @@ auto main(int argc, char* argv[]) -> int {
     ("prettify", "prettify the json output")
     ("g,granularity", "granularity realted to power-fail protected domain should be (page | cacheline | byte)", cxxopts::value<std::string>()->default_value("page"))
     ("non-temporal", "use non-temporal stores")
+    ("noflush", "use PMEM2_F_MEM_NOFLUSH flag mutually exclusive with --non-temporal")
     ("disable-set-affinity", "disable pthread_setaffinity_np")
     // ("a,align", "Alignment", cxxopts::value<size_t>()->default_value("4096"))
   ;
@@ -102,6 +103,7 @@ auto main(int argc, char* argv[]) -> int {
     exit(1);
   }
   bool op_non_temporal = result.count("non-temporal") != 0U;
+  bool op_noflush = result.count("noflush") != 0U;
   bool op_set_affinity = result.count("disable-set-affinity") == 0U;
 
   // check arguments
@@ -112,6 +114,10 @@ auto main(int argc, char* argv[]) -> int {
   auto op_source = result["source"].as<std::string>();
   if (std::find(kSourceType.begin(), kSourceType.end(), op_source) == kSourceType.end()) {
     fmt::print(stderr, "Error: unknown --source type {}\n", op_source);
+    exit(1);
+  }
+  if (op_non_temporal && op_noflush) {
+    fmt::print(stderr, "Error: both --non-temporal and --noflush cannot be specified");
     exit(1);
   }
 
@@ -135,6 +141,7 @@ auto main(int argc, char* argv[]) -> int {
       {"accessPattern", op_random ? "random" : "sequential"},
       {"granularity", result["granularity"].as<std::string>()},
       {"nonTemporal", op_non_temporal},
+      {"noflush", op_noflush},
       {"set-affinity", op_set_affinity},
     }},
     {"results", {
@@ -203,6 +210,9 @@ auto main(int argc, char* argv[]) -> int {
     memcpy_fn = pmem2_get_memcpy_fn(map);
   }
   unsigned int memcpy_flag = op_non_temporal ? PMEM2_F_MEM_NONTEMPORAL : PMEM2_F_MEM_TEMPORAL;
+  if (op_noflush) {
+    memcpy_flag |= PMEM2_F_MEM_NOFLUSH;
+  }
 
   // how many elements fit into the file?
   // size_t map_size = pmem2_map_get_size(map);
