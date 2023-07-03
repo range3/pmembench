@@ -83,20 +83,20 @@ for param_source in "${param_source_list[@]}"; do
               --prettify \
               >"${OUTPUT_DIR}/w_${access_pattern}_${ntstore_label}_${param_source}_${block_size}_${nthreads}_${iter}.json"
 
-            if [ "${ntstore}" = true ]; then
-              "${BENCHMARK_EXE}" \
-                --source $param_source \
-                --path $file_path \
-                --nthreads $nthreads \
-                --total $total_size \
-                --stripe $total_size \
-                --block $block_size \
-                $ntstore_opt \
-                $random_access_opt \
-                --read \
-                --prettify \
-                >"${OUTPUT_DIR}/r_${access_pattern}_${param_source}_${block_size}_${nthreads}_${iter}.json"
-            fi
+            # if [ "${ntstore}" = true ]; then
+            "${BENCHMARK_EXE}" \
+              --source $param_source \
+              --path $file_path \
+              --nthreads $nthreads \
+              --total $total_size \
+              --stripe $total_size \
+              --block $block_size \
+              $ntstore_opt \
+              $random_access_opt \
+              --read \
+              --prettify \
+              >"${OUTPUT_DIR}/r_${access_pattern}_${ntstore_label}_${param_source}_${block_size}_${nthreads}_${iter}.json"
+            # fi
           done
 
           if [ "${param_source}" = "fsdax" ]; then
