@@ -25,8 +25,8 @@ block_size_list=(
 # )
 
 param_source_list=(
-  # devdax
-  fsdax
+  devdax
+  # fsdax
   # anon
 )
 
@@ -36,8 +36,8 @@ access_pattern_list=(
 )
 
 queue_name="gpu"
-# devdax_opt="-v USE_DEVDAX=pmemkv -v NUM_DEVDAX=1"
-devdax_opt=""
+devdax_opt="-v USE_DEVDAX=pmemkv -v NUM_DEVDAX=1"
+# devdax_opt=""
 
 for param_source in "${param_source_list[@]}"; do
 # for nthreads in "${nthreads_list[@]}"; do
