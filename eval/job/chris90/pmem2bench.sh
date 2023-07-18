@@ -80,7 +80,6 @@ for param_source in "${param_source_list[@]}"; do
               --source $param_source \
               --path $file_path \
               --nthreads $nthreads \
-              --total $total_size \
               --stripe $total_size \
               --block $block_size \
               $ntstore_opt \
@@ -93,7 +92,6 @@ for param_source in "${param_source_list[@]}"; do
               --source $param_source \
               --path $file_path \
               --nthreads $nthreads \
-              --total $total_size \
               --stripe $total_size \
               --block $block_size \
               $memcpy_opt \
