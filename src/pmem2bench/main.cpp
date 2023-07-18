@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <cxxopts.hpp>
 #include <iomanip>
 #include <iostream>
@@ -33,6 +34,7 @@ const std::vector<std::string> kSourceType = {"fsdax", "devdax", "anon"};
 
 extern "C" {
 void memcpy_erms(void* dst, void* src, size_t size);
+void memcpy_gobble_mem_fwd_fix(void* dst, void* src, size_t size);
 }
 
 // thread_local char buf[2 * 1024 * 1024];
@@ -244,7 +246,8 @@ auto main(int argc, char* argv[]) -> int {
 
       auto random_string_data = pmembench::generateRandomAlphanumericString(block_size);
 
-      buf = (char*)malloc(random_string_data.size());
+      // buf = (char*)malloc(random_string_data.size());
+      buf = (char*)std::aligned_alloc(16, random_string_data.size());
       memcpy(buf, random_string_data.data(), random_string_data.size());
       // buf = (char*)aligned_alloc(op_alignment, 2*1024*1024);
       // buf = gbuf + i*2*1024*1024;
@@ -280,9 +283,10 @@ auto main(int argc, char* argv[]) -> int {
             size_t start_block_of_strip = stripe_idx * blocks_in_stripe + i * blocks_in_strip_unit;
             for (auto const block_ofs_in_strip : access_offset) {
               size_t block_ofs = start_block_of_strip + block_ofs_in_strip;
-              // memcpy(buf, addr + block_ofs * block_size, block_size);
+              // memmove(buf, addr + block_ofs * block_size, block_size);
               memcpy_fn(buf, addr + block_ofs * block_size, block_size, memcpy_flag);
               // memcpy_erms(&buf[0], addr + block_ofs * block_size, block_size);
+              // memcpy_gobble_mem_fwd_fix(buf, addr + block_ofs * block_size, block_size);
             }
           }
         }

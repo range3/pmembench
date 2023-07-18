@@ -3,6 +3,7 @@ set(EXE_TARGET_NAME pmem2bench)
 set(${EXE_TARGET_NAME}_SRC # cmf: sortable
                            main.cpp
                            memcpy_64.S
+                           memcpy_gobble_mem_fwd_fix.S
                            )
 
 add_executable(${EXE_TARGET_NAME})
@@ -10,6 +11,7 @@ add_executable(${EXE_TARGET_NAME})
 target_sources(${EXE_TARGET_NAME} PRIVATE ${${EXE_TARGET_NAME}_SRC})
 
 target_compile_features(${EXE_TARGET_NAME} PUBLIC cxx_std_20)
+target_compile_options(${EXE_TARGET_NAME} PUBLIC -march=native)
 set_target_properties(${EXE_TARGET_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 find_package(Threads REQUIRED)
