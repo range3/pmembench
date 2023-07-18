@@ -1,6 +1,7 @@
 #include <fcntl.h>
 #include <fmt/core.h>
 #include <libpmem2.h>
+#include <pmembench/version.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -16,10 +17,10 @@
 #include <iostream>
 #include <mutex>
 #include <nlohmann/json.hpp>
-#include <pmembench/barrier.hpp>
 #include <pmembench/elapsedtime.hpp>
 #include <pmembench/gen_random_string.hpp>
 #include <pmembench/pretty_bytes.hpp>
+#include <pmembench/sense_barrier.hpp>
 #include <random>
 #include <sstream>
 #include <string>
@@ -28,7 +29,7 @@
 
 #include "create_pmem2_source.hpp"
 
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 const std::vector<std::string> kSourceType = {"fsdax", "devdax", "anon"};
 
@@ -40,13 +41,13 @@ void memcpy_gobble_mem_fwd_fix(void* dst, void* src, size_t size);
 // thread_local char buf[2 * 1024 * 1024];
 thread_local char* buf;
 
-/*
+/* clang-format off
 nthreads == 4
-|------------------------------------------total_size-------------------------------------------|
-|------------------stripe_size------------------|------------------stripe_size------------------|
-|  thread0  |  thread1  |  thread2  |  thread3  |  thread0  |  thread1  |  thread2  |  thread3  |
-|b0|b1|b2|..|b0|b1|b2|..|b0|b1|b2|..|b0|b1|b2|..|b0|b1|b2|..|b0|b1|b2|..|b0|b1|b2|..|b0|b1|b2|..|
-*/
+|------------------------------------------total_size + padding * nthreads * nsegments------------------------------------------|
+|----------------stripe_size + padding * nthreads---------------|----------------stripe_size + padding * nthreads---------------|
+|  thread0  |pad|  thread1  |pad|  thread2  |pad|  thread3  |pad|  thread0  |pad|  thread1  |pad|  thread2  |pad|  thread3  |pad|
+|b0|b1|b2|..|   |b0|b1|b2|..|   |b0|b1|b2|..|   |b0|b1|b2|..|   |b0|b1|b2|..|   |b0|b1|b2|..|   |b0|b1|b2|..|   |b0|b1|b2|..|   |
+clang-format on */
 
 auto main(int argc, char* argv[]) -> int {
   cxxopts::Options options("pmem2bench",
@@ -55,13 +56,15 @@ auto main(int argc, char* argv[]) -> int {
   // clang-format off
   options.add_options()
     ("h,help", "Print usage")
+    ("V,version", "Print version")
     ("dry-run", "dry run")
     ("source", "select (fsdax | devdax | anon)", cxxopts::value<std::string>()->default_value("fsdax"))
     ("p,path", "/path/to/file or device", cxxopts::value<std::string>()->default_value("./pmem2bench.file"))
-    ("b,block", "block size (bytes)", cxxopts::value<std::string>()->default_value("512"))
-    ("s,stripe", "stripe size (bytes)", cxxopts::value<std::string>()->default_value("512"))
     ("n,nthreads", "number of threads", cxxopts::value<std::string>()->default_value("1"))
-    ("t,total", "total read/write size (bytes)", cxxopts::value<std::string>()->default_value("1G"))
+    ("nsegments", "number of segments", cxxopts::value<std::string>()->default_value("1"))
+    ("s,stripe", "stripe size (bytes)", cxxopts::value<std::string>()->default_value("1G"))
+    ("b,block", "block size (bytes)", cxxopts::value<std::string>()->default_value("512"))
+    ("padding", "padding size (bytes)", cxxopts::value<std::string>()->default_value("4K"))
     ("read", "read")
     ("write", "write")
     ("r,random", "randomize block access in a strip unit.")
@@ -82,11 +85,20 @@ auto main(int argc, char* argv[]) -> int {
     return 0;
   }
 
+  if (result.count("version") != 0U) {
+    fmt::print("{}\n", PMEMBENCH_VERSION);
+    return 0;
+  }
+
   // convert pretty bytes to uint64_t
   auto block_size = pmembench::prettyTo<uint64_t>(result["block"].as<std::string>());
   auto stripe_size = pmembench::prettyTo<uint64_t>(result["stripe"].as<std::string>());
   auto nthreads = pmembench::prettyTo<uint64_t>(result["nthreads"].as<std::string>());
-  auto total_size = pmembench::prettyTo<uint64_t>(result["total"].as<std::string>());
+  auto nsegments = pmembench::prettyTo<uint64_t>(result["nsegments"].as<std::string>());
+  auto padding_size = pmembench::prettyTo<uint64_t>(result["padding"].as<std::string>());
+  auto total_size = stripe_size * nsegments;
+  auto extent_size = total_size + nthreads * padding_size * nsegments;
+  // auto total_size = pmembench::prettyTo<uint64_t>(result["total"].as<std::string>());
   // auto op_alignment = result["align"].as<size_t>();
   bool op_read = result.count("read") != 0U;
   bool op_write = result.count("write") != 0U;
@@ -133,12 +145,16 @@ auto main(int argc, char* argv[]) -> int {
   // clang-format off
   json benchmark_result = {
     {"params", {
+      {"version", PMEMBENCH_VERSION},
       {"source", result["source"].as<std::string>()},
       {"path", result["path"].as<std::string>()},
-      {"blockSize", block_size},
-      {"stripeSize", stripe_size},
       {"nthreads", nthreads},
+      {"nsegments", nsegments},
+      {"stripeSize", stripe_size},
+      {"blockSize", block_size},
+      {"paddingSize", padding_size},
       {"totalSize", total_size},
+      {"extentSize", extent_size},
       {"accessType", op_read ? "read" : "write"},
       {"accessPattern", op_random ? "random" : "sequential"},
       {"granularity", result["granularity"].as<std::string>()},
@@ -162,8 +178,10 @@ auto main(int argc, char* argv[]) -> int {
   if (op_verbose) {
     fmt::print("block size: {}\n", block_size);
     fmt::print("stripe size: {}\n", stripe_size);
+    fmt::print("nsegments: {}\n", nsegments);
     fmt::print("nthreads: {}\n", nthreads);
     fmt::print("total_size: {}\n", total_size);
+    fmt::print("extent_size: {}\n", extent_size);
     fmt::print("access pattern: {}\n", op_random ? "random" : "sequential");
   }
 
@@ -172,7 +190,7 @@ auto main(int argc, char* argv[]) -> int {
   if (!op_dry_run) {
     if (op_source == "fsdax") {
       if (!pmb::createPmem2SourceFromFsdax(&src, result["path"].as<std::string>(),
-                                           static_cast<off64_t>(total_size))) {
+                                           static_cast<off64_t>(extent_size))) {
         exit(1);
       }
     } else if (op_source == "devdax") {
@@ -180,7 +198,7 @@ auto main(int argc, char* argv[]) -> int {
         exit(1);
       }
     } else {
-      if (!pmb::createPmem2SourceFromAnonymous(&src, total_size)) {
+      if (!pmb::createPmem2SourceFromAnonymous(&src, extent_size)) {
         exit(1);
       }
     }
@@ -191,6 +209,7 @@ auto main(int argc, char* argv[]) -> int {
   struct pmem2_map* map;
   char* addr = nullptr;
   pmem2_memcpy_fn memcpy_fn;
+  pmem2_drain_fn drain_fn;
   if (!op_dry_run) {
     if (pmem2_config_new(&cfg) != 0) {
       pmem2_perror("pmem2_config_new");
@@ -210,6 +229,7 @@ auto main(int argc, char* argv[]) -> int {
     // pmem2 functions
     addr = static_cast<char*>(pmem2_map_get_address(map));
     memcpy_fn = pmem2_get_memcpy_fn(map);
+    drain_fn = pmem2_get_drain_fn(map);
   }
   unsigned int memcpy_flag = op_non_temporal ? PMEM2_F_MEM_NONTEMPORAL : PMEM2_F_MEM_TEMPORAL;
   if (op_noflush) {
@@ -220,14 +240,16 @@ auto main(int argc, char* argv[]) -> int {
   // size_t map_size = pmem2_map_get_size(map);
   // fmt::print("map size: {}\n", map_size);
 
-  auto stripe_count = total_size / stripe_size;
+  auto total_padding_size_in_segment = nthreads * padding_size;
   auto strip_unit_size = stripe_size / nthreads;
   auto blocks_in_strip_unit = strip_unit_size / block_size;
   auto blocks_in_stripe = stripe_size / block_size;
 
   std::vector<std::thread> workers;
-  pmembench::Barrier barrier(nthreads + 1);
+  pmembench::SenseBarrier barrier(nthreads);
   std::atomic<bool> fail(false);
+
+  pmembench::ElapsedTime elapsed_time;
 
   for (size_t i = 0; i < nthreads; ++i) {
     workers.emplace_back([&, i] {
@@ -265,54 +287,57 @@ auto main(int argc, char* argv[]) -> int {
                      std::mt19937{std::random_device{}()});
       }
 
+      auto disp_in_segment = i * padding_size;
+
       barrier.wait();
       if (fail) return;
+      if (i == 0) {
+        elapsed_time.reset();
+      }
       barrier.wait();
 
       if (!op_dry_run) {
         if (op_write) {
-          for (size_t stripe_idx = 0; stripe_idx < stripe_count; ++stripe_idx) {
-            size_t start_block_of_strip = stripe_idx * blocks_in_stripe + i * blocks_in_strip_unit;
+          for (size_t segment_idx = 0; segment_idx < nsegments; ++segment_idx) {
+            size_t start_block_of_strip = segment_idx * blocks_in_stripe + i * blocks_in_strip_unit;
+            size_t disp = segment_idx * total_padding_size_in_segment + disp_in_segment;
             for (auto const block_ofs_in_strip : access_offset) {
               size_t block_ofs = start_block_of_strip + block_ofs_in_strip;
-              memcpy_fn(addr + block_ofs * block_size, buf, block_size, memcpy_flag);
+              memcpy_fn(addr + disp + block_ofs * block_size, buf, block_size, memcpy_flag);
+              // drain_fn(); // for --noflush
             }
           }
         } else {
-          for (size_t stripe_idx = 0; stripe_idx < stripe_count; ++stripe_idx) {
-            size_t start_block_of_strip = stripe_idx * blocks_in_stripe + i * blocks_in_strip_unit;
+          for (size_t segment_idx = 0; segment_idx < nsegments; ++segment_idx) {
+            size_t start_block_of_strip = segment_idx * blocks_in_stripe + i * blocks_in_strip_unit;
+            size_t disp = segment_idx * total_padding_size_in_segment + disp_in_segment;
             for (auto const block_ofs_in_strip : access_offset) {
               size_t block_ofs = start_block_of_strip + block_ofs_in_strip;
               // memmove(buf, addr + block_ofs * block_size, block_size);
-              memcpy_fn(buf, addr + block_ofs * block_size, block_size, memcpy_flag);
+              memcpy_fn(buf, addr + disp + block_ofs * block_size, block_size, memcpy_flag);
               // memcpy_erms(&buf[0], addr + block_ofs * block_size, block_size);
               // memcpy_gobble_mem_fwd_fix(buf, addr + block_ofs * block_size, block_size);
             }
           }
         }
       } else if (op_verbose) {
-        for (size_t stripe_idx = 0; stripe_idx < stripe_count; ++stripe_idx) {
-          size_t start_block_of_strip = stripe_idx * blocks_in_stripe + i * blocks_in_strip_unit;
+        for (size_t segment_idx = 0; segment_idx < nsegments; ++segment_idx) {
+          size_t start_block_of_strip = segment_idx * blocks_in_stripe + i * blocks_in_strip_unit;
+          size_t disp = segment_idx * total_padding_size_in_segment + disp_in_segment;
           for (auto const block_ofs_in_strip : access_offset) {
             size_t block_ofs = start_block_of_strip + block_ofs_in_strip;
-            fmt::print("tid:{}\tblock_idx:{}\tblock_size:{}\n", i, block_ofs, block_size);
+            fmt::print("tid:{}\tdisp:{}\tblock_idx:{}\tblock_size:{}\n", i, disp, block_ofs,
+                       block_size);
           }
         }
       }
 
       barrier.wait();
+      if (i == 0) {
+        elapsed_time.freeze();
+      }
       free(buf);
     });
-  }
-
-  barrier.wait();
-  pmembench::ElapsedTime elapsed_time;
-  if (!fail) {
-    elapsed_time.reset();
-    barrier.wait();
-
-    barrier.wait();
-    elapsed_time.freeze();
   }
 
   for (auto& worker : workers) {

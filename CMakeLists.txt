@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.14...3.22)
 # Note: update this to your new project's name and version
 project(
   pmembench
-  VERSION 0.1.0
+  VERSION 0.2.0
   LANGUAGES CXX C ASM
 )
 
@@ -81,6 +81,13 @@ file(GLOB_RECURSE headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include
 add_library(pmembench INTERFACE)
 add_library(${PROJECT_NAME}::pmembench ALIAS pmembench)
 # set_target_properties(pmembench PROPERTIES PUBLIC_HEADER headers)
+
+include(cmake/version.cmake)
+target_add_version_header(
+  pmembench VERSION_HEADER ${PROJECT_NAME}/version.h
+  # INSTALL include/${PROJECT_NAME}-${PROJECT_VERSION}
+)
+
 
 target_include_directories(
   pmembench

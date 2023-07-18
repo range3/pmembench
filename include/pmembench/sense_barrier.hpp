@@ -18,6 +18,7 @@ namespace pmembench {
 
     void wait() {
       bool my_sense = tl_sense_.get();
+      tl_sense_.set(!my_sense);
 
       if (waits_.fetch_sub(1, std::memory_order_acq_rel) == 1) {
         waits_.store(nthreads_, std::memory_order_relaxed);
@@ -26,7 +27,6 @@ namespace pmembench {
         while (my_sense != sense_.load(std::memory_order_acquire))
           ;
       }
-      tl_sense_.set(!my_sense);
     }
 
   private:
