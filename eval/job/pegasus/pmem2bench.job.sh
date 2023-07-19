@@ -59,11 +59,18 @@ max_iter=3
 for nthreads in "${nthreads_list[@]}"; do
 total_size=$((nthreads * size_per_thread))
 for iter in $(seq $max_iter); do
+  if [ "${ntstore}" = true ]; then
+    memcpy_opt="$ntstore_opt"
+  else
+    # because Pegasus has FastADR (eADR), flush is no longer necessary.
+    memcpy_opt="--noflush"
+  fi
+
+    # $memcpy_opt \
   "${BENCHMARK_EXE}" \
     --source $param_source \
     --path $file_path \
     --nthreads $nthreads \
-    --total $total_size \
     --stripe $total_size \
     --block $block_size \
     $ntstore_opt \
@@ -72,16 +79,10 @@ for iter in $(seq $max_iter); do
     --prettify \
       > "${OUTPUT_DIR}/w_${access_pattern}_${ntstore_label}_${param_source}_${block_size}_${nthreads}_${iter}.json"
 
-  if [ "${ntstore}" = true ]; then
-    memcpy_opt="$ntstore_opt"
-  else
-    memcpy_opt="--noflush"
-  fi
   "${BENCHMARK_EXE}" \
     --source $param_source \
     --path $file_path \
     --nthreads $nthreads \
-    --total $total_size \
     --stripe $total_size \
     --block $block_size \
     $memcpy_opt \

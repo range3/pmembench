@@ -20,6 +20,11 @@ block_size_list=(
   1M
 )
 
+ntstore_list=(
+  true
+  false
+)
+
 # nthreads_list=(
 #   1 2 4 8 16 32 48
 # )
@@ -42,7 +47,7 @@ devdax_opt="-v USE_DEVDAX=pmemkv -v NUM_DEVDAX=1"
 for param_source in "${param_source_list[@]}"; do
 # for nthreads in "${nthreads_list[@]}"; do
 for block_size in "${block_size_list[@]}"; do
-for ntstore in true false; do
+for ntstore in "${ntstore_list[@]}"; do
 for access_pattern in "${access_pattern_list[@]}"; do
 
   # -v PMEM2BENCH_NTHREADS=${nthreads} \

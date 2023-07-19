@@ -1,0 +1,25 @@
+{
+  "params": {
+    "accessPattern": "sequential",
+    "accessType": "write",
+    "blockSize": 8192,
+    "granularity": "page",
+    "noflush": true,
+    "nonTemporal": false,
+    "nthreads": 2,
+    "path": "/dev/dax0.0",
+    "set-affinity": true,
+    "source": "devdax",
+    "stripeSize": 17179869184,
+    "totalSize": 17179869184
+  },
+  "results": {
+    "IOPS": 874272.8613491085,
+    "MIOPS": 0.8742728613491085,
+    "MiB_per_sec": 6830.25672928991,
+    "addr": 21206401024000,
+    "byte_per_sec": 7162043280.171897,
+    "success": true,
+    "time": 2398.738532
+  }
+}
